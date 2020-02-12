@@ -32,13 +32,18 @@ function createStore(reducer){
 //has to be a pure function
 //state will be undefined for first time usage. if undefined it should be an empty array.
 // also called as reducer function.
-function todos (state = [],action){
-    if(action.type ==='ADD_TODO'){
+function todos (state = [], action) {
+    switch(action.type) {
+      case 'ADD_TODO' :
         return state.concat([action.todo])
-
+      case 'REMOVE_TODO' :
+        return state.filter((todo) => todo.id !== action.id)
+      case 'TOGGLE_TODO' :
+        return state.map((todo) => todo.id !== action.id ? todo :
+          Object.assign({}, todo, { complete: !todo.complete }))
+      default :
+        return state
     }
-    return state
-}
 
 const store = createStore(todos)
 
